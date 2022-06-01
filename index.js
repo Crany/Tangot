@@ -4,7 +4,7 @@ const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const { 
     Client, Intents, MessageEmbed,
-    Collection
+    Collection, Permissions, 
 } = require('discord.js');
 const createCaptcha = require('./captcha/captcha.js');
 const fs = require('node:fs');
@@ -136,7 +136,7 @@ client.on('messageCreate', async (message) => {
                                     client.guilds.cache.get(process.env.GUILDID).channels.cache.get('980850845497307206').send({ embeds: [welcomeEmbed] })
                                 }
                             } catch (e) {
-                                console.error(e)
+                                if (e != 'Collection(0) [Map] {}') console.error(e);
                                 captchaEmbed.setTitle(`You did not complete the captcha fast enough.`)
                                 captchaEmbed.setColor("RED")
                                 await message.author.send({ embeds: [captchaEmbed] })
