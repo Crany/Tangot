@@ -26,6 +26,14 @@ const client = new Client({
     ]
 });
 
+const modRoles = [
+    '980849935643725864', // Owner
+    '981657737291251722', // Moderator
+    '980879699670626344', // Leader
+    '980879536549924864', // Developer
+
+]
+
 const clientID = process.env.CLIENTID;
 
 const doingCaptcha = [];
@@ -72,9 +80,16 @@ client.on('interactionCreate', async (interaction) => {
 });
 
 client.on('messageCreate', async (message) => {
+    const hasModRoles = modRoles.some(roles => { // Checks if the message author has any Moderation roles //
+        if (message.channel.type != 'DM') {
+            return message.member.roles.cache.has(roles)
+        }
+    })
+
     if (message.author.bot === true) return;
     else if (message.channel.id == '980860670390190082') {
-        if (message.content == 'ready') {
+        if (hasModRoles) return;
+        else if (message.content == 'ready') {
             message.delete()
 
             // * // Captcha Stuff //
