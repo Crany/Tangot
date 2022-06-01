@@ -64,7 +64,8 @@ client.once('ready', () => {
 });
 
 client.on('interactionCreate', async (interaction) => {
-    if (!interaction.isCommand) return
+    if (!interaction.isCommand) return;
+    else if (interaction.channel.id == '980860670390190082') return;
     else if (interaction.commandName == "ping") {
         await interaction.reply("Ping!");
     }
