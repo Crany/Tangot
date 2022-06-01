@@ -61,7 +61,7 @@ const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
 
 client.once('ready', () => {
     console.log('Tangot is ready.');
-})
+});
 
 client.on('interactionCreate', async (interaction) => {
     if (!interaction.isCommand) return
