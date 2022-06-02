@@ -12,6 +12,7 @@ const createCaptcha = require('./captcha/captcha.js');
 const mongoose = require('mongoose');
 const fs = require('node:fs');
 const path = require('node:path');
+const hasModRoles = require('./util/role_checker.js')
 const client = new Client({
     intents: [ // Uses for the Bot //
         Intents.FLAGS.DIRECT_MESSAGES,
@@ -29,14 +30,6 @@ const client = new Client({
         'USER'
     ]
 });
-
-const modRoles = [
-    '980849935643725864', // Owner
-    '981657737291251722', // Moderator
-    '980879699670626344', // Leader
-    '980879536549924864', // Developer
-    '981933858138255381', // Admin Perms
-]
 
 client.commands = new Collection();
 
@@ -94,7 +87,7 @@ client.once('ready', () => {
 client.on('interactionCreate', async (interaction) => {
     const command = client.commands.get(interaction.commandName);
     if (!interaction.isCommand) return;
-    else if (interaction.channel.id == '980860670390190082') return;
+    else if (interaction.channel.id == '980860670390190082') await interaction.reply({ content: "You can't do / commands here.", ephemeral: true });
     else if (!command) return;
     else {
         try {
@@ -104,18 +97,15 @@ client.on('interactionCreate', async (interaction) => {
             await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
         }
     }
+
+    console.log(await hasModRoles('i', interaction));
 });
 
 client.on('messageCreate', async (message) => {
-    const hasModRoles = modRoles.some(roles => { // Checks if the message author has any Moderation roles //
-        if (message.channel.type != 'DM') {
-            return message.member.roles.cache.has(roles)
-        }
-    })
 
     if (message.author.bot === true) return;
     else if (message.channel.id == '980860670390190082') {
-        if (hasModRoles) return;
+        if (hasModRoles("m", message)) return;
         else if (message.content == 'ready') {
             message.delete()
 
