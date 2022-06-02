@@ -31,7 +31,7 @@ const modRoles = [
     '981657737291251722', // Moderator
     '980879699670626344', // Leader
     '980879536549924864', // Developer
-
+    '981933858138255381', // Admin erms
 ]
 
 const clientID = process.env.CLIENTID;
