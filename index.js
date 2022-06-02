@@ -1,3 +1,5 @@
+'use strict'
+
 require('dotenv').config();
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { REST } = require('@discordjs/rest');
@@ -7,7 +9,9 @@ const {
     Collection, Permissions, 
 } = require('discord.js');
 const createCaptcha = require('./captcha/captcha.js');
+const mongoose = require('mongoose');
 const fs = require('node:fs');
+const path = require('node:path');
 const client = new Client({
     intents: [ // Uses for the Bot //
         Intents.FLAGS.DIRECT_MESSAGES,
@@ -31,24 +35,40 @@ const modRoles = [
     '981657737291251722', // Moderator
     '980879699670626344', // Leader
     '980879536549924864', // Developer
-    '981933858138255381', // Admin erms
+    '981933858138255381', // Admin Perms
 ]
+
+client.commands = new Collection();
+
+const commands = [];
+const commandsPath = path.join(__dirname, 'commands');
+const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
 const clientID = process.env.CLIENTID;
 
 const doingCaptcha = [];
 
-const commands = [
-    new SlashCommandBuilder().setName('ping').setDescription('Replies with pong!'),
-];
-
-client.commands = new Collection();
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-
-for (const file of commandFiles) { // Command Files //
-    const command = require(`./commands/${file}`);
-    client.commands.set(command.name, command);
+for (const file of commandFiles) {
+	const filePath = path.join(commandsPath, file);
+	const command = require(filePath);
+	commands.push(command.data.toJSON());
 }
+
+for (const file of commandFiles) {
+	const filePath = path.join(commandsPath, file);
+	const command = require(filePath);
+	// Set a new item in the Collection
+	// With the key as the command name and the value as the exported module
+	client.commands.set(command.data.name, command);
+}
+
+const clientId = '123456789012345678';
+const guildId = '876543210987654321';
+
+// for (const file of commandFiles) {
+// 	const command = require(`./commands/${file}`);
+// 	commands.push(command.data.toJSON());
+// }
 
 const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
 
@@ -72,10 +92,17 @@ client.once('ready', () => {
 });
 
 client.on('interactionCreate', async (interaction) => {
+    const command = client.commands.get(interaction.commandName);
     if (!interaction.isCommand) return;
     else if (interaction.channel.id == '980860670390190082') return;
-    else if (interaction.commandName == "ping") {
-        await interaction.reply("Ping!");
+    else if (!command) return;
+    else {
+        try {
+            await command.execute(interaction);
+        } catch (error) {
+            console.error(error);
+            await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+        }
     }
 });
 
