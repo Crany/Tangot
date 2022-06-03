@@ -1,5 +1,7 @@
 'use strict'
 
+console.log('Starting Bot...')
+
 require('dotenv').config();
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { REST } = require('@discordjs/rest');
@@ -12,7 +14,7 @@ const createCaptcha = require('./captcha/captcha.js');
 const mongoose = require('mongoose');
 const fs = require('node:fs');
 const path = require('node:path');
-const hasModRoles = require('./util/role_checker.js')
+const hasModRoles = require('./util/hasModRoles.js');
 const client = new Client({
     intents: [ // Uses for the Bot //
         Intents.FLAGS.DIRECT_MESSAGES,
@@ -67,21 +69,21 @@ const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
 
 (async () => {
 	try {
-		console.log('Started refreshing application (/) commands.');
+		console.log('├── Started refreshing application (/) commands.');
 
 		await rest.put(
 			Routes.applicationGuildCommands(clientID, process.env.GUILDID),
 			{ body: commands },
 		);
 
-		console.log('Successfully reloaded application (/) commands.');
+		console.log('├── Successfully reloaded application (/) commands.');
 	} catch (error) {
 		console.error(error);
 	}
 })();
 
 client.once('ready', () => {
-    console.log('Tangot is ready.');
+    console.log('└── Connected to discord.');
 });
 
 client.on('interactionCreate', async (interaction) => {
@@ -91,14 +93,14 @@ client.on('interactionCreate', async (interaction) => {
     else if (!command) return;
     else {
         try {
-            await command.execute(interaction);
+            await command.execute(interaction, client, mongoose);
         } catch (error) {
             console.error(error);
             await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
         }
-    }
 
-    console.log(await hasModRoles('i', interaction));
+        console.log(`${interaction.user.tag} use the command "${interaction.commandName}"`)
+    }
 });
 
 client.on('messageCreate', async (message) => {
@@ -190,4 +192,17 @@ client.on('messageCreate', async (message) => {
     }
 })
 
-client.login(process.env.TOKEN);
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+}).then(() => {
+    console.log("├── Connected to the MongoDB Database.");
+    client.login(process.env.TOKEN).catch((err) => {
+        console.log("└── Failed to connect to Discord.");
+        console.error(err);
+    });
+}).catch((err) => {
+    console.log("└── Failed to connect to the MongoDB Database.");
+    console.error(err);
+    process.exit(1);
+});

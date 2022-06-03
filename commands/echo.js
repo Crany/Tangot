@@ -1,4 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const { MessageEmbed } = require('discord.js');
+
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -9,7 +11,10 @@ module.exports = {
 			.setDescription('The input to echo back')
 			.setRequired(true)
         ),
-    async execute(interaction) {
-        return await interaction.reply(interaction.options.getString('input'))
+    async execute(interaction, client, mongoose) {
+		let testEmbed = new MessageEmbed()
+		.setColor('GREEN')
+		.setDescription(`Echo-ed: \`${interaction.options.getString('input')}\``)
+        return await interaction.reply({ embeds: [testEmbed] })
     }
 }
