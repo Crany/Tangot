@@ -15,7 +15,7 @@ module.exports = {
         )
         .addStringOption((option) =>
             option.setName('reason')
-            .setDescription('reason for the report')
+            .setDescription('Reason for the report')
             .setRequired(true)
         ),
     async execute(interaction, client, mongoose) {
@@ -54,8 +54,8 @@ module.exports = {
                 { name: 'Reason:', value: reason, inline: true},
             )
             .setFooter(`ID: ${indentifier}`)
+            .setTimestamp(new Date())
             client.channels.cache.get('982311311444680704').send({ embeds: [reportChannelEmbed] })
-
 
             const reportdb = new reportDB({
                 _id: new mongoose.Types.ObjectId,
