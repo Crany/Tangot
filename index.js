@@ -107,7 +107,7 @@ client.on('messageCreate', async (message) => {
 
     if (message.author.bot === true) return;
     else if (message.channel.id == '980860670390190082') {
-        if (hasModRoles("m", message)) return;
+        if (hasModRoles("m", message) == true) return;
         else if (message.content == 'ready') {
             message.delete()
 
