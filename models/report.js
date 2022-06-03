@@ -7,6 +7,7 @@ const reportSchema = new mongoose.Schema({
     reportedID: String,
     informantTag: String,
     identifier: String,
+    where: String,
 });
 
 module.exports = mongoose.model("Report", reportSchema);

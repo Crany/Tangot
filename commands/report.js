@@ -46,7 +46,7 @@ module.exports = {
             .setDescription(`Remember this ID: \`${indentifier}\``)
             await interaction.reply({ embeds: [reportedEmbed] })
 
-            reportChannelEmbed.setTitle(`${reportedUser.tag} was reported.`)            
+            reportChannelEmbed.setTitle(`${reportedUser.tag} was reported. [Discord]`)            
             .setColor('FFBF00')
             .addFields(
                 { name: 'Reported:', value: reportedUser.tag, inline: true},
@@ -63,7 +63,8 @@ module.exports = {
                 reportedTag: reportedUser.tag,
                 reportedID: reportedUser.id,
                 informantTag: informant.tag,
-                indentifier: indentifier
+                indentifier: indentifier,
+                where: 'Discord'
             })
 
             reportdb.save().catch();
