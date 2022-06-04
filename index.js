@@ -84,6 +84,7 @@ const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
 
 client.once('ready', () => {
     console.log('└── Connected to discord.');
+    console.log('App Logs:')
 });
 
 client.on('interactionCreate', async (interaction) => {
