@@ -22,7 +22,7 @@ module.exports = {
         let reportedUser = interaction.options.getMember('reported').user;
         let reason = interaction.options.getString('reason');
         let informant = interaction.user
-        let indentifier = `${randomWords()}.${randomWords()}.${randomWords()}`;
+        let identifier = `${randomWords()}.${randomWords()}.${randomWords()}`;
 
         let reportedEmbed = new MessageEmbed()
         let reportChannelEmbed = new MessageEmbed()
@@ -43,7 +43,7 @@ module.exports = {
 
             reportedEmbed.setTitle("Report Sent.")
             .setColor('GREEN')
-            .setDescription(`Remember this ID: \`${indentifier}\``)
+            .setDescription(`Remember this ID: \`${identifier}\``)
             await interaction.reply({ embeds: [reportedEmbed] })
 
             reportChannelEmbed.setTitle(`${reportedUser.tag} was reported. [Discord]`)            
@@ -53,7 +53,7 @@ module.exports = {
                 { name: 'Reported By:', value: informant.tag, inline: true},
                 { name: 'Reason:', value: reason, inline: true},
             )
-            .setFooter(`ID: ${indentifier}`)
+            .setFooter(`ID: ${identifier}`)
             .setTimestamp(new Date())
             client.channels.cache.get('982311311444680704').send({ embeds: [reportChannelEmbed] })
 
@@ -63,7 +63,7 @@ module.exports = {
                 reportedTag: reportedUser.tag,
                 reportedID: reportedUser.id,
                 informantTag: informant.tag,
-                indentifier: indentifier,
+                identifier: identifier,
                 where: 'Discord'
             })
 
