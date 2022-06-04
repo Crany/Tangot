@@ -61,8 +61,6 @@ module.exports = {
                 _id: new mongoose.Types.ObjectId,
                 reason: reason,
                 reportedTag: reportedUser.tag,
-                reportedID: reportedUser.id,
-                informantTag: informant.tag,
                 identifier: identifier,
                 where: 'Discord'
             })
