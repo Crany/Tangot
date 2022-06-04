@@ -9,7 +9,7 @@ const modRoles = require('../data/modRoles.json').modRoles;
 
 // It's async so don't forget to use await
 
-module.exports = async (type, input) => {
+module.exports = (type, input) => {
     if (type == "m") {
         return modRoles.some(roles => { // Checks if the message author has any Moderation roles //
             if (input.channel.type != 'DM') return input.member.roles.cache.has(roles);
