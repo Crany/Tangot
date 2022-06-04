@@ -38,7 +38,7 @@ module.exports = {
             reportedEmbed.setDescription("You can't report yourself, silly!")
             .setColor('FFBF00');
 
-            await interaction.reply({ embeds: [reportedEmbed] });
+            await interaction.reply({ embeds: [reportedEmbed], ephemeral: true });
         } else {
 
             reportedEmbed.setTitle("Report Sent.")
