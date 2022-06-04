@@ -105,10 +105,14 @@ client.on('interactionCreate', async (interaction) => {
 
 client.on('messageCreate', async (message) => {
 
+    let messageContent = message.content.toLowerCase()
+
     if (message.author.bot === true) return;
     else if (message.channel.id == '980860670390190082') {
+        let readySplitContent = message.content.split('ready');
+
         if (hasModRoles("m", message) == true) return;
-        else if (message.content == 'ready') {
+        else if (readySplitContent.length == 2) {
             message.delete()
 
             // * // Captcha Stuff //
