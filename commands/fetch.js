@@ -46,9 +46,9 @@ module.exports = {
                     await interaction.reply(`${client.guilds.cache.get('980839689609150545').members.cache.get(client.user.id).nickname} is thinking...`)
                     
                     let user = interaction.options.getMember('user');
+                    let identifier = interaction.options.getString('id');
                     if (user != null) user = user.user;
                     if (identifier != null) identifier = identifier.toLowerCase();
-                    let identifier = interaction.options.getString('id');
                     let reportFetch = []; // Clear results //
                     let reportFetchResult = []; // MongoDB Results //
                     
