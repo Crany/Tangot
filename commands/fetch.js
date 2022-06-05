@@ -47,6 +47,7 @@ module.exports = {
                     
                     let user = interaction.options.getMember('user');
                     if (user != null) user = user.user;
+                    if (identifier != null) identifier = identifier.toLowerCase();
                     let identifier = interaction.options.getString('id');
                     let reportFetch = []; // Clear results //
                     let reportFetchResult = []; // MongoDB Results //
