@@ -86,7 +86,7 @@ module.exports = {
                     else if (length[1] == 'minute' || length[1] == 'minutes') user.timeout(length[0] * 60 * 1000, reason);
                     else if (length[1] == 'hour'   || length[1] == 'hours')   user.timeout(length[0] * 60 * 60 * 1000, reason);
                     else if (length[1] == 'day'    || length[1] == 'days')    user.timeout(length[0] * 24 * 60 * 60 * 1000, reason);
-                    else if (length[1] == 'week'   || length[1] == 'weeks')   user.timeout(length[0] * 7  * 24 * 60 * 60 * 1000, rason);
+                    else if (length[1] == 'week'   || length[1] == 'weeks')   user.timeout(length[0] * 7  * 24 * 60 * 60 * 1000, reason);
                 
                     let timeoutEmbed = new MessageEmbed()
                     .setDescription(`${user.user} is now on a timeout for ${length.join(' ')} for the reason:\n\`\`\`\n${reason}\n\`\`\``)
