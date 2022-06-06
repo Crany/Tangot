@@ -89,7 +89,7 @@ client.once('ready', () => {
 
 client.on('interactionCreate', async (interaction) => {
     const command = client.commands.get(interaction.commandName);
-    if (!interaction.isCommand) return;
+    if (!interaction.isCommand && !interaction.isAutocomplete()) return;
     else if (interaction.channel.id == '980860670390190082') await interaction.reply({ content: "You can't do / commands here.", ephemeral: true });
     else if (!command) return;
     else {
@@ -100,7 +100,8 @@ client.on('interactionCreate', async (interaction) => {
             await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
         }
 
-        console.log(`${interaction.user.tag} use the command "${interaction.commandName}"`)
+        if (interaction.isAutocomplete()) return;
+        else console.log(`${interaction.user.tag} use the command "${interaction.commandName}"`); 
     }
 });
 
@@ -112,7 +113,7 @@ client.on('messageCreate', async (message) => {
     else if (message.channel.id == '980860670390190082') {
         let readySplitContent = message.content.split('ready');
 
-        if (hasModRoles("m", message) == true) return;
+        if (hasModRoles.has("m", message) == true) return;
         else if (readySplitContent.length == 2) {
             message.delete()
 

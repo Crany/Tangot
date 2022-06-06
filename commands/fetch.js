@@ -35,7 +35,7 @@ module.exports = {
 
         if (subCommandGroup === 'reports') {
 
-            if (hasModRoles('i', interaction) == false) {
+            if (hasModRoles.has('i', interaction) == false) {
                 await interaction.reply({ embeds: [
                     new MessageEmbed()
                     .setDescription("You have to be a Moderator to do this action.")
